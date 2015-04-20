@@ -76,6 +76,8 @@ alist = [54,26,93,17,77,31,44,55,20]
 insertionSort(alist)
 print(alist)
 
+
+
 #Shell Sort
 #between O(n) and O(n2) 
 """improves on the insertion sort by breaking the original list into a number of smaller sublists. the shell sort
