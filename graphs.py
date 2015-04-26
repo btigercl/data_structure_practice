@@ -84,60 +84,73 @@ class Graph:
         #allows list of vert values to be interable 
         return iter(self.vertList.values())
 
-
+"""Breadth First Search
+-Easiest for searchign a graph.
+-Finds all vertices that are k distance from s before finding vertices that are k + 1 distance from s(buidls a tree one layer at a time)
+-for this example, the vertices are color coded: 
+    White = undiscovered
+    Gray = discovered(but not all related vertices have been discovered)
+    Black = explored(all related vertices have been discovered)
+-Uses Queue to explore because last in first out is import to maintain order of vertices to be explored
+-added to Vertex class: distance, predecessor, and color (part of the pythonds library)
+Big O notation: O(n) with n being the number of vertices to transverse 
+"""
 # from pythonds.graphs import Graph, Vertex
 # from pythonds.basic import Queue
 
 def bfs(g,start):
   start.setDistance(0)
-  start.setPred(None)
-  vertQueue = Queue()
-  vertQueue.enqueue(start)
+  start.setPred(None)#set predecessor to none in order to make this the root of the tree
+  vertQueue = Queue() #instantiates a queque 
+  vertQueue.enqueue(start) #adds to queque 
   while (vertQueue.size() > 0):
-    currentVert = vertQueue.dequeue()
-    for nbr in currentVert.getConnections():
-      if (nbr.getColor() == 'white'):
-        nbr.setColor('gray')
-        nbr.setDistance(currentVert.getDistance() + 1)
-        nbr.setPred(currentVert)
-        vertQueue.enqueue(nbr)
-    currentVert.setColor('black')
+    currentVert = vertQueue.dequeue() #removes first vertex added to the queque
+    for nbr in currentVert.getConnections(): #gets the vertex's list of connections and loops through the list
+      if (nbr.getColor() == 'white'):#if unexplored 
+        nbr.setColor('gray')#set to explored 
+        nbr.setDistance(currentVert.getDistance() + 1) #Gives weight/distance of vertex to root. Can be considered layers of tree 
+        nbr.setPred(currentVert)#set predecessor/parent vertex
+        vertQueue.enqueue(nbr) #places back in queue to explore if vertex has other connections/children 
+    currentVert.setColor('black') #explored 
 
+"""Knight Tour 
+This looks for a tour to visit every square on the board exactly once. 
+"""
 from pythonds.graphs import Graph, Vertex
-def knightTour(n,path,u,limit):
-        u.setColor('gray')
-        path.append(u)
+def knightTour(n,path,u,limit): # n = depth in search tree; path = list of vertices visted; u = vertex to explore; limit= number of nodes on path
+        u.setColor('gray')#color set to indicate exploration 
+        path.append(u)#add vertex/node to path
         if n < limit:
-            nbrList = list(u.getConnections())
-            i = 0
-            done = False
-            while i < len(nbrList) and not done:
-                if nbrList[i].getColor() == 'white':
-                    done = knightTour(n+1, path, nbrList[i], limit)
-                i = i + 1
+            nbrList = orderByAvail(n)#gets list of connected nodes of current vertex/node with shortest route 
+            i = 0 #counter 
+            done = False #when recursition hits the bottom of the stack and returns 
+            while i < len(nbrList) and not done:#loops through all children of a vertex/list
+                if nbrList[i].getColor() == 'white':#if unexplored
+                    done = knightTour(n+1, path, nbrList[i], limit)#recurse with current node/vertx
+                i = i + 1#increment count
             if not done:  # prepare to backtrack
-                path.pop()
-                u.setColor('white')
+                path.pop() #pop this path if it is a dead end
+                u.setColor('white') #return to unexplored/unvisited vertex/square. 
         else:
-            done = True
+            done = True #stops loop when returned to indicate a deadend
         return done
 
     
 def orderByAvail(n):
     resList = []
-    for v in n.getConnections():
-        if v.getColor() == 'white':
-            c = 0
-            for w in v.getConnections():
-                if w.getColor() == 'white':
-                    c = c + 1
-            resList.append((c,v))
-    resList.sort(key=lambda x: x[0])
-    return [y[1] for y in resList]
+    for v in n.getConnections():# gets all connected nodes for current node
+        if v.getColor() == 'white': # if unexplored
+            c = 0 # counter
+            for w in v.getConnections(): #get child node connections 
+                if w.getColor() == 'white': #if unexplored
+                    c = c + 1 #number of connections
+            resList.append((c,v)) #puts a tuple in the list with the child nodes and number of child node's connections
+    resList.sort(key=lambda x: x[0])#sorts tuples for node with least connections 
+    return [y[1] for y in resList]#returns n's child node with least children/connections 
 
+"""Depth First Search 
 
-
-    
+""" 
 from pythonds.graphs import Graph
 class DFSGraph(Graph):
     def __init__(self):
@@ -196,3 +209,8 @@ def prim(G,start):
               nextVert.setDistance(newCost)
               pq.decreaseKey(nextVert,newCost)
 
+
+"""Color Graph
+a graph is colorable if each vertex can be assigned one color so that adjacent vertices get different colors. 
+
+"""
