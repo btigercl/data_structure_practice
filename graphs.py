@@ -211,6 +211,32 @@ def prim(G,start):
 
 
 """Color Graph
-a graph is colorable if each vertex can be assigned one color so that adjacent vertices get different colors. 
+Notes from: https://www.cs.princeton.edu/courses/archive/fall06/cos341/handouts/graph1.pdf
 
+A graph is colorable if each vertex can be assigned one color so that adjacent vertices get different colors. 
+A color graph is k(the maximum degree of any vertex in the graph) the number of colors will be k + 1 
+Induction Hypothesis:
+    Let P(n) b the proposition that an n-vertext graph with maximum degree at most k is (k + 1)-colorable
+    A 1-vertex graph has maximum degree 0 and is 1-colorable, so P(1) is true 
+Complete graph or clique: graph with all possible edges 
+Aconnected component of a graph is a maximal connected subgraph of the graph.Maximal means you can't add any
+    nodes or edges to the subgrpah without making it be disconnected. 
 """
+
+"""Matchings 
+Notes from: https://www.cs.princeton.edu/courses/archive/fall06/cos341/handouts/graph2.pdf
+
+Matching Problems: Given a graph where the edges represent compatibility, the goal is to create the maximum number
+    of compatible pairs
+    -a matching is a subgraph of a Graph where every node has degree 1. The matching consists of edges that do not share nodes
+    -A matching f a graph G = (V, E) is perfect if it has |V|/2 edges 
+    -Arise in context of a bipartie graph(a graph whose vertices can be divided into two disjoint sets. 
+    -The goal is to find the perfect matching wiht the minimum weight 
+The weight of matching M is the sum of the wieghts on the edges in M. The min-weight matching for a graph G is the perfect
+    matching for G with minimum weight (if it exists)
+    -If there is a better match than ones created, causes instablity 
+"""
+
+"""file:///Users/hollymalm/Desktop/C2U4GT.pdf """
+"""file:///Users/hollymalm/Desktop/graphtheory.pdf """
+"""file:///Users/hollymalm/Desktop/graphs_1_print.pdf """
